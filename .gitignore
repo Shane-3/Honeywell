@@ -1,0 +1,28 @@
+# Python bytecode & cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.antigravityignore
+
+# Planning & Internal Documentation
+prd.md
+design.md
+requirements.md
+reports/pitch_deck_slides.md
+
+# Large Generated Datasets & Models
+data/*.csv
+!data/.gitkeep
+models/saved/*
+!models/saved/.gitkeep

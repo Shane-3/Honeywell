@@ -1,0 +1,49 @@
+{
+  "eval_timestamp": "2026-07-26T22:03:34.433203",
+  "total_test_events": 53628,
+  "total_alerts_generated": 21813,
+  "pr_auc": 0.5475,
+  "alert_budget_precision": {
+    "top_0.5%": {
+      "top_k_count": 268,
+      "precision": 0.5896,
+      "recall": 0.5163
+    },
+    "top_1.0%": {
+      "top_k_count": 536,
+      "precision": 0.3116,
+      "recall": 0.5458
+    },
+    "top_3.0%": {
+      "top_k_count": 1608,
+      "precision": 0.1169,
+      "recall": 0.6144
+    }
+  },
+  "cold_start_slice": {
+    "cold_start_events_count": 0,
+    "warm_events_count": 53628,
+    "warm_precision": 0.0769,
+    "warm_recall": 0.7418
+  },
+  "attack_distribution_predicted": {
+    "normal": 31815,
+    "insider_drift": 19576,
+    "low_and_slow_exfil": 1359,
+    "brute_force": 745,
+    "lateral_movement": 90,
+    "credential_stuffing": 35,
+    "impossible_travel": 6,
+    "device_spoofing": 2
+  },
+  "attack_distribution_actual": {
+    "normal": 53322,
+    "insider_drift": 90,
+    "brute_force": 82,
+    "low_and_slow_exfil": 65,
+    "credential_stuffing": 36,
+    "lateral_movement": 27,
+    "impossible_travel": 4,
+    "device_spoofing": 2
+  }
+}
