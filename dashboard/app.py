@@ -36,9 +36,9 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 os.makedirs(FIGURES_DIR, exist_ok=True)
 
 app = FastAPI(
-    title="Honeywell Sentinel AI — Threat Anomaly Intelligence",
+    title="Aegis Sentinel AI — Autonomous Threat Intelligence",
     version="1.0.0",
-    description="Enterprise Cybersecurity Behavioral Anomaly Detection & SOC Analyst Interface"
+    description="Autonomous Cybersecurity Behavioral Anomaly Detection & SOC Analyst Interface"
 )
 
 # Mount static files and templates

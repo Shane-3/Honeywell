@@ -1,10 +1,10 @@
-# Honeywell Sentinel AI — Cybersecurity Behavioral Anomaly Detection & Threat Intelligence Platform
+# Aegis Sentinel AI — Cybersecurity Behavioral Anomaly Detection & Threat Intelligence Platform
 
 ## Executive Summary
 
 Modern enterprise networks face sophisticated cyber threats ranging from fast brute-force authentication attacks to subtle, multi-day low-and-slow exfiltration and insider privilege drift. Traditional threshold-based SIEM rules fail to catch context-sensitive threats, while pure black-box deep learning models suffer from high false-positive rates and opaque decision-making that overwhelms Security Operations Center (SOC) analysts.
 
-This project delivers **Honeywell Sentinel AI**, a production-ready, hybrid AI anomaly detection system tailored for enterprise networks. Combining **statistical baseline profiling**, **first-order Markov sequence modeling**, **sliding-window temporal feature engineering**, and a **RandomForest multi-class classifier with deterministic rule overrides**, our architecture achieves:
+This project delivers **Aegis Sentinel AI**, a production-ready, hybrid AI anomaly detection system tailored for enterprise networks. Combining **statistical baseline profiling**, **first-order Markov sequence modeling**, **sliding-window temporal feature engineering**, and a **RandomForest multi-class classifier with deterministic rule overrides**, our architecture achieves:
 - **0.5475 PR-AUC** on 53,628 test events under a realistic 99.4% / 0.6% class imbalance framing.
 - **58.96% Precision @ Top-0.5% Alert Capacity** (capturing 51.63% of all cyber incidents in the top 268 alerts).
 - **Sub-10 millisecond per-event scoring latency** running entirely on local CPU resources without GPU acceleration.

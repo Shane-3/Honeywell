@@ -1,4 +1,4 @@
-# Honeywell Sentinel AI — Behavioral Anomaly Detection & Threat Intelligence
+# Aegis AI — AI Powered Behavioral Anomaly Detection for Cybersecurity
 
 **Enterprise Cybersecurity SOC Platform**
 

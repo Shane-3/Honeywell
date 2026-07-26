@@ -308,18 +308,14 @@ async function loadAlerts() {
     }
 
     tbody.innerHTML = data.alerts.map(a => {
-      const risk = (a.risk_score || 0).toFixed(4);
-      let riskClass = 'risk-low';
-      if (risk >= 0.40) riskClass = 'risk-high';
-      else if (risk >= 0.25) riskClass = 'risk-med';
-
+      const scoreObj = formatThreatScore(a.risk_score);
       const typeLabel = formatAttackType(a.predicted_type);
       const coldBadge = a.is_cold_start ? `<span class="state-badge badge-cold">COLD START</span>` : '';
       const driftBadge = a.is_drift_flagged ? `<span class="state-badge badge-drift">DRIFT</span>` : '';
 
       return `
         <tr onclick="openAlertDetail('${a.session_id}')">
-          <td><span class="risk-pill ${riskClass}">${risk}</span></td>
+          <td>${scoreObj.pillHtml}</td>
           <td><strong>${a.entity_id}</strong> ${coldBadge} ${driftBadge}</td>
           <td><span class="type-tag">${typeLabel}</span></td>
           <td style="color: var(--text-secondary); font-size: 0.82rem;">${formatTimestamp(a.timestamp)}</td>
@@ -422,11 +418,13 @@ async function openAlertDetail(sessionId) {
     const cleanRawJson = { ...alert };
     if (cleanRawJson.top_features) delete cleanRawJson.top_features;
 
+    const scoreObj = formatThreatScore(alert.risk_score);
+
     modalBody.innerHTML = `
       <div style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
         <div>
           <span class="type-tag" style="font-size: 0.9rem; padding: 6px 14px;">${formatAttackType(alert.predicted_type)}</span>
-          <span style="margin-left: 12px; font-weight: 700; color: var(--accent-cyan);">Risk Score: ${(alert.risk_score || 0).toFixed(4)}</span>
+          <span style="margin-left: 12px;">Threat Score: ${scoreObj.fullHtml}</span>
         </div>
         <div style="font-size: 0.82rem; color: var(--text-secondary);">
           Entity: <strong style="color: #fff;">${alert.entity_id}</strong> (${alert.entity_type})
@@ -500,6 +498,32 @@ function formatTimestamp(ts) {
   return ts.replace('T', ' ');
 }
 
+function formatThreatScore(score) {
+  const val = parseFloat(score || 0);
+  const score100 = (val * 100).toFixed(1);
+  let level = 'LOW';
+  let badgeClass = 'risk-low';
+
+  if (val >= 0.80) {
+    level = 'CRITICAL';
+    badgeClass = 'risk-critical';
+  } else if (val >= 0.40) {
+    level = 'HIGH';
+    badgeClass = 'risk-high';
+  } else if (val >= 0.25) {
+    level = 'MEDIUM';
+    badgeClass = 'risk-med';
+  }
+
+  return {
+    score100: score100,
+    level: level,
+    badgeClass: badgeClass,
+    pillHtml: `<span class="risk-pill ${badgeClass}">${score100} / 100</span>`,
+    fullHtml: `<span class="risk-pill ${badgeClass}">${score100} / 100 (${level})</span>`
+  };
+}
+
 // Attack Simulation Modal Controller
 function openSimulationModal() {
   const modal = document.getElementById('detail-modal');
@@ -525,6 +549,8 @@ function renderSimulationControls(simResult) {
       topFeats = a.top_features;
     }
 
+    const simScoreObj = formatThreatScore(a.risk_score);
+
     resultHtml = `
       <div class="glass-card" style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); margin-bottom: 20px; padding: 16px 20px;">
         <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -538,7 +564,7 @@ function renderSimulationControls(simResult) {
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; font-size: 0.88rem;">
           <div><span style="color: var(--text-muted);">Attack Category:</span> <br><strong style="color: #93c5fd;">${formatAttackType(a.predicted_type)}</strong></div>
           <div><span style="color: var(--text-muted);">Session ID:</span> <br><code style="color: #e2e8f0;">${a.session_id}</code></div>
-          <div><span style="color: var(--text-muted);">Risk Score:</span> <br><span class="risk-pill risk-high">${(a.risk_score || 0).toFixed(4)} (HIGH RISK)</span></div>
+          <div><span style="color: var(--text-muted);">Threat Score (0-100):</span> <br>${simScoreObj.fullHtml}</div>
           <div><span style="color: var(--text-muted);">Target Entity:</span> <br><strong style="color: #fff;">${a.entity_id}</strong> (${a.entity_type})</div>
           <div><span style="color: var(--text-muted);">Source IP & Geo:</span> <br><span style="color: #fff;">${a.source_ip}</span> (${a.geo_location})</div>
           <div><span style="color: var(--text-muted);">Target Resource:</span> <br><span style="color: #fcd34d;">${a.resource_accessed}</span></div>
